@@ -4,11 +4,14 @@ using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osuTK;
 using System;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input.Events;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.MusicVolume.UI;
+using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
 {
@@ -43,6 +46,13 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
                 Masking = true,
                 BorderThickness = 15,
                 CornerRadius = 20,
+                EdgeEffect = new EdgeEffectParameters
+                {
+                    Radius = 10,
+                    Colour = Color4.Black.Opacity(0.2f),
+                    Type = EdgeEffectType.Shadow,
+                    Hollow = true
+                },
                 Child = new Box
                 {
                     RelativeSizeAxes = Axes.Both,
