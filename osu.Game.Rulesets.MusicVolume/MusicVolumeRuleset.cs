@@ -57,11 +57,11 @@ namespace osu.Game.Rulesets.MusicVolume
                         new MultiMod(new MusicVolumeModDoubleTime(), new MusicVolumeModNightcore())
                     };
 
-                /*case ModType.Automation:
+                case ModType.Automation:
                     return new Mod[]
                     {
-                        new BosuModAutoplay()
-                    };*/
+                        new MusicVolumeModAutoplay()
+                    };
 
                 case ModType.Fun:
                     return new Mod[]

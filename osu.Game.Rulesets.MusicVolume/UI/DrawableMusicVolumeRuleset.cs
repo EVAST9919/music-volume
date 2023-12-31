@@ -4,7 +4,10 @@ using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.UI;
 using System.Collections.Generic;
 using osu.Framework.Input;
+using osu.Game.Input.Handlers;
+using osu.Game.Replays;
 using osu.Game.Rulesets.MusicVolume.Objects;
+using osu.Game.Rulesets.MusicVolume.Replays;
 
 namespace osu.Game.Rulesets.MusicVolume.UI
 {
@@ -22,5 +25,7 @@ namespace osu.Game.Rulesets.MusicVolume.UI
         public override PlayfieldAdjustmentContainer CreatePlayfieldAdjustmentContainer() => new MusicVolumePlayfieldAdjustmentContainer();
 
         public override DrawableHitObject<MusicVolumeHitObject> CreateDrawableRepresentation(MusicVolumeHitObject h) => null;
+
+        protected override ReplayInputHandler CreateReplayInputHandler(Replay replay) => new MusicVolumeFramedReplayInputHandler(replay);
     }
 }
