@@ -48,6 +48,9 @@ namespace osu.Game.Rulesets.MusicVolume.Beatmaps
 
                     break;
 
+                case IHasDuration:
+                    break;
+
                 default:
                     yield return new MusicVolumeCircle
                     {
