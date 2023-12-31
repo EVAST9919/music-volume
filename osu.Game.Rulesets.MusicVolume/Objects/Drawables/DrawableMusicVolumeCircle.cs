@@ -74,7 +74,7 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
         protected override void UpdateInitialTransforms()
         {
             base.UpdateInitialTransforms();
-            this.FadeInFromZero(HitObject.TimeFadeIn);
+            this.FadeInFromZero(HitObject.TimePreempt * 0.1f);
         }
 
         protected override void Update()
