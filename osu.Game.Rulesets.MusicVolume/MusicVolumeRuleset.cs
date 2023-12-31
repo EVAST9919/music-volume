@@ -17,6 +17,7 @@ using osu.Game.Rulesets.MusicVolume.Configuration;
 //using osu.Framework.Allocation;
 //using osu.Framework.Platform;
 using osu.Game.Rulesets.MusicVolume.Difficulty;
+using osu.Game.Rulesets.MusicVolume.Mods;
 using osu.Game.Rulesets.MusicVolume.Skinning.Argon;
 using osu.Game.Rulesets.MusicVolume.Skinning.Legacy;
 using osu.Game.Rulesets.MusicVolume.UI;
@@ -38,7 +39,40 @@ namespace osu.Game.Rulesets.MusicVolume
 
         public override IEnumerable<KeyBinding> GetDefaultKeyBindings(int variant = 0) => Array.Empty<KeyBinding>();
 
-        public override IEnumerable<Mod> GetModsFor(ModType type) => Array.Empty<Mod>();
+        public override IEnumerable<Mod> GetModsFor(ModType type)
+        {
+            switch (type)
+            {
+                case ModType.DifficultyReduction:
+                    return new Mod[]
+                    {
+                        new MusicVolumeModNoFail(),
+                        new MultiMod(new MusicVolumeModHalfTime(), new MusicVolumeModDaycore())
+                    };
+
+                case ModType.DifficultyIncrease:
+                    return new Mod[]
+                    {
+                        new MusicVolumeModSuddenDeath(),
+                        new MultiMod(new MusicVolumeModDoubleTime(), new MusicVolumeModNightcore())
+                    };
+
+                /*case ModType.Automation:
+                    return new Mod[]
+                    {
+                        new BosuModAutoplay()
+                    };*/
+
+                case ModType.Fun:
+                    return new Mod[]
+                    {
+                        new MultiMod(new ModWindUp(), new ModWindDown())
+                    };
+
+                default:
+                    return Array.Empty<Mod>();
+            }
+        }
 
         public override string Description => "Music Volume";
 
