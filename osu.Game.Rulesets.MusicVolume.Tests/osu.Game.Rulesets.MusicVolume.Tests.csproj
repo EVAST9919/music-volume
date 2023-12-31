@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+      <StartupObject>osu.Game.Rulesets.MusicVolume.Tests.VisualTestRunner</StartupObject>
+      <LangVersion>8</LangVersion>
+    </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\osu.Game.Rulesets.MusicVolume\osu.Game.Rulesets.MusicVolume.csproj" />
+  </ItemGroup>
+  <PropertyGroup Label="Project">
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>osu.Game.Rulesets.MusicVolume.Tests</RootNamespace>
+  </PropertyGroup>
+</Project>
