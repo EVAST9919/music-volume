@@ -74,6 +74,7 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
         protected override void UpdateInitialTransforms()
         {
             base.UpdateInitialTransforms();
+            this.FadeColour(Color4.White);
             this.FadeInFromZero(HitObject.TimePreempt * 0.1f);
         }
 
@@ -82,6 +83,9 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
             base.Update();
 
             if (HitObject == null)
+                return;
+
+            if (Result.HasResult && !Result.IsHit)
                 return;
 
             double speed = 800 / HitObject.TimePreempt;
@@ -95,8 +99,6 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
 
         private void computeProperties(float z)
         {
-            z = Math.Max(z, 0);
-
             float scale = scaleForDepth(z);
             Position = toPlayfieldPosition(scale, PositionBindable.Value);
             Scale = new Vector2(scale);
@@ -134,6 +136,11 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
             switch (state)
             {
                 case ArmedState.Miss:
+                    this.FadeOut(200);
+                    this.RotateTo(25, 200, Easing.InOutQuad);
+                    this.FadeColour(Color4.Red, 200, Easing.Out);
+                    break;
+
                 case ArmedState.Hit:
                     this.FadeOut(100);
                     break;
