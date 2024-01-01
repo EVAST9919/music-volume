@@ -9,6 +9,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input.Events;
+using osu.Game.Rulesets.MusicVolume.Extensions;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.MusicVolume.UI;
 using osuTK.Graphics;
@@ -17,9 +18,10 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
 {
     public partial class DrawableMusicVolumeCircle : DrawableMusicVolumeHitObject<MusicVolumeCircle>
     {
-        private static readonly Vector3 camera_position = new Vector3(MusicVolumePlayfield.BASE_SIZE * 0.5f, MusicVolumePlayfield.BASE_SIZE * 0.5f, -100);
-
         public readonly IBindable<Vector2> PositionBindable = new Bindable<Vector2>();
+
+        [Resolved]
+        private Bindable<Vector3> cameraPosition { get; set; }
 
         public DrawableMusicVolumeCircle()
             : this(null)
@@ -75,8 +77,10 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
         {
             base.UpdateInitialTransforms();
             this.FadeColour(Color4.White);
-            this.FadeInFromZero(HitObject.TimePreempt * 0.1f);
+            this.FadeInFromZero(HitObject.TimePreempt * 0.2f);
         }
+
+        private const float max_depth = 800;
 
         protected override void Update()
         {
@@ -88,9 +92,9 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
             if (Result.HasResult && !Result.IsHit)
                 return;
 
-            double speed = 800 / HitObject.TimePreempt;
+            double speed = max_depth / HitObject.TimePreempt;
             double appearTime = HitObject.StartTime - HitObject.TimePreempt;
-            float z = 800 - (float)((Math.Max(Time.Current, appearTime) - appearTime) * speed);
+            float z = max_depth - (float)((Math.Max(Time.Current, appearTime) - appearTime) * speed);
 
             computeProperties(z);
         }
@@ -99,16 +103,10 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
 
         private void computeProperties(float z)
         {
-            float scale = scaleForDepth(z);
-            Position = toPlayfieldPosition(scale, PositionBindable.Value);
+            Vector3 cameraPos = cameraPosition.Value;
+            float scale = VolumeExtensions.ScaleForDepth(z, cameraPos.Z);
+            Position = VolumeExtensions.ToPlayfieldPosition(scale, PositionBindable.Value + cameraPos.Xy - new Vector2(MusicVolumePlayfield.BASE_SIZE * 0.5f), cameraPos);
             Scale = new Vector2(scale);
-        }
-
-        private static float scaleForDepth(float depth) => -camera_position.Z / Math.Max(1f, depth - camera_position.Z);
-
-        private static Vector2 toPlayfieldPosition(float scale, Vector2 positionAtZeroDepth)
-        {
-            return (positionAtZeroDepth - camera_position.Xy) * scale + camera_position.Xy;
         }
 
         public override bool HandlePositionalInput => true;
