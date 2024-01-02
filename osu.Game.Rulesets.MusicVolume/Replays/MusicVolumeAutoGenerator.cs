@@ -24,10 +24,10 @@ namespace osu.Game.Rulesets.MusicVolume.Replays
 
         public override Replay Generate()
         {
-            Replay.Frames.Add(new MusicVolumeReplayFrame(-10000, new Vector2(MusicVolumePlayfield.BASE_SIZE)));
+            Vector2 lastPos = new Vector2(MusicVolumePlayfield.BASE_SIZE * 0.5f);
+            Replay.Frames.Add(new MusicVolumeReplayFrame(-10000, lastPos));
 
             double lastTime = Beatmap.HitObjects[0].StartTime - 1000;
-            Vector2 lastPos = new Vector2(MusicVolumePlayfield.BASE_SIZE);
 
             for (int i = 0; i < Beatmap.HitObjects.Count; i++)
             {
