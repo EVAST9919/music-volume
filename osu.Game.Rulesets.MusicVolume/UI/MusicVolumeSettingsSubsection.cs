@@ -26,6 +26,11 @@ namespace osu.Game.Rulesets.MusicVolume.UI
                 {
                     LabelText = "Show Cursor Trail",
                     Current = config.GetBindable<bool>(MusicVolumeRulesetSetting.ShowCursorTrail)
+                },
+                new SettingsCheckbox
+                {
+                    LabelText = "Enable parallax",
+                    Current = config.GetBindable<bool>(MusicVolumeRulesetSetting.EnableParallax)
                 }
             };
         }

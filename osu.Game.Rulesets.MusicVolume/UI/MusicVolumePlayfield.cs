@@ -4,6 +4,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Game.Rulesets.MusicVolume.Configuration;
 using osu.Game.Rulesets.MusicVolume.Extensions;
 using osu.Game.Rulesets.Objects;
 using osu.Game.Rulesets.MusicVolume.Objects;
@@ -17,9 +18,10 @@ namespace osu.Game.Rulesets.MusicVolume.UI
     public partial class MusicVolumePlayfield : Playfield
     {
         public static readonly float BASE_SIZE = 512f;
+        private static readonly Vector3 default_camera = new(BASE_SIZE * 0.5f, BASE_SIZE * 0.5f, -100);
 
         [Cached]
-        private Bindable<Vector3> camera { get; set; } = new(new Vector3(MusicVolumePlayfield.BASE_SIZE * 0.5f, MusicVolumePlayfield.BASE_SIZE * 0.5f, -100));
+        private Bindable<Vector3> camera { get; set; } = new(default_camera);
 
         public MusicVolumePlayfield()
         {
@@ -32,18 +34,41 @@ namespace osu.Game.Rulesets.MusicVolume.UI
             };
         }
 
+        private Bindable<bool> parallaxBindable;
+        private bool parallax;
+        private bool defaultCameraSet;
+
         [BackgroundDependencyLoader]
-        private void load()
+        private void load(MusicVolumeRulesetConfigManager config)
         {
+            parallaxBindable = config.GetBindable<bool>(MusicVolumeRulesetSetting.EnableParallax);
+
             RegisterPool<MusicVolumeCircle, DrawableMusicVolumeCircle>(300, 500);
+        }
+
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+            parallaxBindable.BindValueChanged(p => parallax = p.NewValue, true);
         }
 
         protected override void Update()
         {
             base.Update();
 
-            Vector2 cursorOffset = ToLocalSpace(GetContainingInputManager().CurrentState.Mouse.Position) - DrawSize * 0.5f;
-            camera.Value = new Vector3(MusicVolumePlayfield.BASE_SIZE * 0.5f - cursorOffset.X * 0.05f, MusicVolumePlayfield.BASE_SIZE * 0.5f - cursorOffset.Y * 0.05f, -100);
+            if (parallax)
+            {
+                Vector2 cursorOffset = ToLocalSpace(GetContainingInputManager().CurrentState.Mouse.Position) - DrawSize * 0.5f;
+                camera.Value = new Vector3(BASE_SIZE * 0.5f - cursorOffset.X * 0.05f, BASE_SIZE * 0.5f - cursorOffset.Y * 0.05f, -100);
+                defaultCameraSet = false;
+                return;
+            }
+
+            if (defaultCameraSet)
+                return;
+
+            camera.Value = default_camera;
+            defaultCameraSet = true;
         }
 
         protected override HitObjectLifetimeEntry CreateLifetimeEntry(HitObject hitObject) => new MusicVolumeHitObjectLifetimeEntry(hitObject);

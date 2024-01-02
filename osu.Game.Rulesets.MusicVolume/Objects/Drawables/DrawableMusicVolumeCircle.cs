@@ -62,8 +62,6 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
                     Alpha = 0
                 }
             });
-
-            //PositionBindable.BindValueChanged(p => Position = p.NewValue);
         }
 
         protected override void LoadComplete()
@@ -108,8 +106,6 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
             Position = VolumeExtensions.ToPlayfieldPosition(scale, PositionBindable.Value + cameraPos.Xy - new Vector2(MusicVolumePlayfield.BASE_SIZE * 0.5f), cameraPos);
             Scale = new Vector2(scale);
         }
-
-        public override bool HandlePositionalInput => true;
 
         protected override void CheckForResult(bool userTriggered, double timeOffset)
         {

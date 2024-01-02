@@ -14,12 +14,14 @@ namespace osu.Game.Rulesets.MusicVolume.Configuration
         {
             base.InitialiseDefaults();
             SetValue(MusicVolumeRulesetSetting.ShowCursorTrail, true);
+            SetValue(MusicVolumeRulesetSetting.EnableParallax, true);
         }
     }
 
     public enum MusicVolumeRulesetSetting
     {
-        ShowCursorTrail
+        ShowCursorTrail,
+        EnableParallax
     }
 }
 
