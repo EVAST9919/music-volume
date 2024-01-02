@@ -78,7 +78,7 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
             this.FadeInFromZero(HitObject.TimePreempt * 0.2f);
         }
 
-        private const float max_depth = 800;
+        private const float max_depth = 1000;
 
         protected override void Update()
         {
@@ -96,8 +96,6 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
 
             computeProperties(z);
         }
-
-        protected override bool OnHover(HoverEvent e) => true;
 
         private void computeProperties(float z)
         {
