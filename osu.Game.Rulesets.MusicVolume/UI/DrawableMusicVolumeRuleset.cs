@@ -8,6 +8,7 @@ using osu.Game.Input.Handlers;
 using osu.Game.Replays;
 using osu.Game.Rulesets.MusicVolume.Objects;
 using osu.Game.Rulesets.MusicVolume.Replays;
+using osuTK;
 
 namespace osu.Game.Rulesets.MusicVolume.UI
 {
@@ -17,6 +18,8 @@ namespace osu.Game.Rulesets.MusicVolume.UI
             : base(ruleset, beatmap, mods)
         {
         }
+
+        public override bool ReceivePositionalInputAt(Vector2 screenSpacePos) => true; // always show the gameplay cursor
 
         protected override PassThroughInputManager CreateInputManager() => new MusicVolumeInputManager(Ruleset.RulesetInfo);
 
