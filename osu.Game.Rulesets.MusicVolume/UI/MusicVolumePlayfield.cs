@@ -29,8 +29,8 @@ namespace osu.Game.Rulesets.MusicVolume.UI
             Anchor = Anchor.Centre;
             InternalChildren = new Drawable[]
             {
-                HitObjectContainer,
-                new MusicVolumeBorder()
+                new MusicVolumeBorder(),
+                HitObjectContainer
             };
         }
 
