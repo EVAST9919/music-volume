@@ -8,6 +8,7 @@ using System.Threading;
 using osuTK;
 using osu.Game.Rulesets.MusicVolume.Objects;
 using osu.Game.Rulesets.MusicVolume.UI;
+using osu.Game.Rulesets.Objects.Legacy;
 
 namespace osu.Game.Rulesets.MusicVolume.Beatmaps
 {
@@ -32,7 +33,7 @@ namespace osu.Game.Rulesets.MusicVolume.Beatmaps
                     {
                         StartTime = original.StartTime,
                         Samples = original.Samples,
-                        Position = toMusicVolumePlayfield(positionData?.Position ?? Vector2.Zero),
+                        Position = toMusicVolumePlayfield(positionData?.Position ?? Vector2.Zero, beatmap.Difficulty.CircleSize),
                         NewCombo = comboData?.NewCombo ?? false,
                         ComboOffset = comboData?.ComboOffset ?? 0,
                     };
@@ -41,7 +42,7 @@ namespace osu.Game.Rulesets.MusicVolume.Beatmaps
                     {
                         StartTime = original.StartTime + curve.Duration,
                         Samples = original.Samples,
-                        Position = toMusicVolumePlayfield(positionData?.Position + curve.CurvePositionAt(curve.Duration) ?? Vector2.Zero),
+                        Position = toMusicVolumePlayfield(positionData?.Position + curve.CurvePositionAt(curve.Duration) ?? Vector2.Zero, beatmap.Difficulty.CircleSize),
                         NewCombo = false,
                         ComboOffset = comboData?.ComboOffset ?? 0,
                     };
@@ -56,7 +57,7 @@ namespace osu.Game.Rulesets.MusicVolume.Beatmaps
                     {
                         StartTime = original.StartTime,
                         Samples = original.Samples,
-                        Position = toMusicVolumePlayfield(positionData?.Position ?? Vector2.Zero),
+                        Position = toMusicVolumePlayfield(positionData?.Position ?? Vector2.Zero, beatmap.Difficulty.CircleSize),
                         NewCombo = comboData?.NewCombo ?? false,
                         ComboOffset = comboData?.ComboOffset ?? 0,
                     };
@@ -67,12 +68,15 @@ namespace osu.Game.Rulesets.MusicVolume.Beatmaps
 
         protected override Beatmap<MusicVolumeHitObject> CreateBeatmap() => new MusicVolumeBeatmap();
 
-        private static Vector2 toMusicVolumePlayfield(Vector2 osuPosition)
+        private static Vector2 toMusicVolumePlayfield(Vector2 osuPosition, float cs)
         {
             float relativeX = Math.Clamp(osuPosition.X, 0, 512) / 512;
             float relativeY = Math.Clamp(osuPosition.Y, 0, 384) / 384;
-            float x = relativeX * (MusicVolumePlayfield.BASE_SIZE * 0.8f) + MusicVolumePlayfield.BASE_SIZE * 0.1f;
-            float y = relativeY * (MusicVolumePlayfield.BASE_SIZE * 0.8f) + MusicVolumePlayfield.BASE_SIZE * 0.1f;
+
+            float size = MusicVolumePlayfield.BASE_SIZE * 0.4f * LegacyRulesetExtensions.CalculateScaleFromCircleSize(cs, true);
+
+            float x = relativeX * (MusicVolumePlayfield.BASE_SIZE - size) + size * 0.5f;
+            float y = relativeY * (MusicVolumePlayfield.BASE_SIZE - size) + size * 0.5f;
             return new Vector2(x, y);
         }
     }

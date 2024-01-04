@@ -8,7 +8,6 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Shapes;
-using osu.Framework.Input.Events;
 using osu.Game.Rulesets.MusicVolume.Extensions;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.MusicVolume.UI;
@@ -19,6 +18,7 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
     public partial class DrawableMusicVolumeCircle : DrawableMusicVolumeHitObject<MusicVolumeCircle>
     {
         public readonly IBindable<Vector2> PositionBindable = new Bindable<Vector2>();
+        public readonly IBindable<float> ScaleBindable = new Bindable<float>();
 
         [Resolved]
         private Bindable<Vector3> cameraPosition { get; set; }
@@ -41,13 +41,10 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
             Alpha = 0;
 
             Origin = Anchor.Centre;
-            Size = new Vector2(MusicVolumePlayfield.BASE_SIZE * 0.2f);
             AddInternal(container = new Container
             {
                 RelativeSizeAxes = Axes.Both,
                 Masking = true,
-                BorderThickness = 15,
-                CornerRadius = 20,
                 EdgeEffect = new EdgeEffectParameters
                 {
                     Radius = 10,
@@ -74,6 +71,9 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
         protected override void UpdateInitialTransforms()
         {
             base.UpdateInitialTransforms();
+            this.ResizeTo(new Vector2(MusicVolumePlayfield.BASE_SIZE * 0.4f * ScaleBindable.Value));
+            container.BorderThickness = 30 * ScaleBindable.Value;
+            container.CornerRadius = 30 * ScaleBindable.Value;
             this.FadeColour(Color4.White);
             this.FadeInFromZero(HitObject.TimePreempt * 0.2f);
         }
@@ -144,6 +144,7 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
             base.OnApply();
 
             PositionBindable.BindTo(HitObject.PositionBindable);
+            ScaleBindable.BindTo(HitObject.ScaleBindable);
         }
 
         protected override void OnFree()
@@ -151,6 +152,7 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
             base.OnFree();
 
             PositionBindable.UnbindFrom(HitObject.PositionBindable);
+            ScaleBindable.UnbindFrom(HitObject.ScaleBindable);
         }
 
         protected override double InitialLifetimeOffset => HitObject.TimePreempt;
