@@ -63,6 +63,12 @@ namespace osu.Game.Rulesets.MusicVolume
                         new MusicVolumeModAutoplay()
                     };
 
+                case ModType.Conversion:
+                    return new Mod[]
+                    {
+                        new MusicVolumeModDifficultyAdjust()
+                    };
+
                 case ModType.Fun:
                     return new Mod[]
                     {
