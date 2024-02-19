@@ -114,11 +114,11 @@ namespace osu.Game.Rulesets.MusicVolume.Objects.Drawables
 
             if (mousePos.X >= 0 && mousePos.X <= Size.X && mousePos.Y >= 0 && mousePos.Y <= Size.Y)
             {
-                ApplyResult(h => h.Type = h.Judgement.MaxResult);
+                ApplyMaxResult();
                 return;
             }
 
-            ApplyResult(r => r.Type = r.Judgement.MinResult);
+            ApplyMinResult();
         }
 
         protected override void UpdateHitStateTransforms(ArmedState state)
