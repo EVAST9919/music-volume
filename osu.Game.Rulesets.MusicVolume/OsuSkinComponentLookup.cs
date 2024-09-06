@@ -5,15 +5,11 @@ using osu.Game.Skinning;
 
 namespace osu.Game.Rulesets.MusicVolume
 {
-    public class OsuSkinComponentLookup : GameplaySkinComponentLookup<OsuSkinComponents>
+    public class OsuSkinComponentLookup : SkinComponentLookup<OsuSkinComponents>
     {
         public OsuSkinComponentLookup(OsuSkinComponents component)
             : base(component)
         {
         }
-
-        protected override string RulesetPrefix => "osu";
-
-        protected override string ComponentName => Component.ToString().ToLowerInvariant();
     }
 }
